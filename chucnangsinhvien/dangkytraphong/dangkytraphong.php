@@ -9,45 +9,67 @@ if (isset($_SESSION['sv'])) {
     $sv = $_SESSION['sv'];
 
 
-$maSV = $sv['MaSV'];
+    $maSV = $sv['MaSV'];
 
-$query = "SELECT d.MaSV, s.HoTen, d.MaPhong
+    $query = "SELECT d.MaSV, s.HoTen, d.MaPhong
           FROM dangkyphong AS d
           JOIN sinhvien AS s ON d.MaSV = s.MaSV
           WHERE d.MaSV = '$maSV'";
-$result = mysqli_query($conn, $query);
+    $result = mysqli_query($conn, $query);
 
-if (mysqli_num_rows($result) > 0) {
-    $row = mysqli_fetch_assoc($result);
-    $maSV = $row['MaSV'];
-    $hoTen = $row['HoTen'];
-    $maPhong = $row['MaPhong'];
-}
-
-if (isset($_POST['traPhong'])) {
-    // Lấy thông tin phòng đang ở của sinh viên
-    $queryPhongDangO = "SELECT MaPhong FROM dangkyphong WHERE MaSV = '$maSV'";
-    $resultPhongDangO = mysqli_query($conn, $queryPhongDangO);
-
-    if (mysqli_num_rows($resultPhongDangO) > 0) {
-        $rowPhongDangO = mysqli_fetch_assoc($resultPhongDangO);
-        $maPhongDangO = $rowPhongDangO['MaPhong'];
-
-        // Cập nhật thông tin phòng và ngày trả phòng
-        $updateQuery = "UPDATE dangkyphong SET  TinhTrang = 'chờ duyệt trả' WHERE MaSV = '$maSV'";
-
-        if (mysqli_query($conn, $updateQuery)) {
-            //header('location: index.php');
-            // Đăng ký thành công, chuyển hướng và hiển thị thông báo
-            echo '<script>alert("Bạn đã đăng ký trả phòng thành công. Hãy chờ ban quản lý ktx duyệt yêu cầu của bạn.");</script>';
-            $maPhong = ""; // Đặt lại biến mã phòng thành chuỗi trống
-        } else {
-            echo "Lỗi khi cập nhật thông tin trả phòng: " . mysqli_error($conn);
+    $query1 = "SELECT HoTen, MaPhong FROM sinhvien WHERE MaSV = '$maSV'";
+    $result1 = mysqli_query($conn, $query1);
+    
+    $maPhong = "Không có";
+    if (mysqli_num_rows($result1) > 0) {
+        $row1 = mysqli_fetch_array($result1);
+        $hoTen = $row1['HoTen'];
+        if(isset($row1['MaPhong'])) {
+        $maPhong = $row1['MaPhong'];
         }
-    } else {
-        echo "Sinh viên không có phòng để trả.";
     }
-}
+
+    if (isset($_POST['traPhong'])) {
+        $queryKiemTraCoPhong = "SELECT MaPhong FROM sinhvien WHERE MaSV = '$maSV'";
+        $resultKiemTraCoPhong = mysqli_query($conn, $queryKiemTraCoPhong);
+        $rowKiemTraCoPhong = mysqli_fetch_array($resultKiemTraCoPhong);
+        if ($rowKiemTraCoPhong == NULL) { ?>
+            <script type="text/javascript">
+                alert("Bạn đang không có phòng, vui lòng đăng ký phòng!");
+            </script>
+        <?php } else {
+            // Lấy thông tin phòng đang ở của sinh viên
+            $queryPhongDangO = "SELECT MaPhong FROM dangkyphong WHERE MaSV = '$maSV'";
+            $resultPhongDangO = mysqli_query($conn, $queryPhongDangO);
+
+            if (mysqli_num_rows($resultPhongDangO) > 0) {
+                $rowPhongDangO = mysqli_fetch_assoc($resultPhongDangO);
+                $maPhongDangO = $rowPhongDangO['MaPhong'];
+
+                // Cập nhật thông tin phòng và ngày trả phòng
+                $updateQuery = "UPDATE dangkyphong SET  TinhTrang = 'chờ duyệt trả' WHERE MaSV = '$maSV'";
+
+                if (mysqli_query($conn, $updateQuery)) {
+                    //header('location: index.php');
+                    // Đăng ký thành công, chuyển hướng và hiển thị thông báo
+                    echo '<script>alert("Bạn đã đăng ký trả phòng thành công. Hãy chờ ban quản lý ktx duyệt yêu cầu của bạn.");</script>';
+                    $sql1 = "UPDATE dangkyphong SET NgayTraPhong = CURDATE()";
+                    $query1 = mysqli_query($conn, $sql1);
+
+                } else {
+                    echo "Lỗi khi cập nhật thông tin trả phòng: " . mysqli_error($conn);
+                }
+            } else { ?>
+                <script type="text/javascript">
+                    alert("Sinh viên không có phòng để trả, vui lòng đăng ký phòng!");
+                </script>
+            <?php
+            }
+
+        }
+    }
+} else {
+    header('location: index.php?action=login');
 }
 ?>
 

@@ -122,14 +122,16 @@
     $conn = mysqli_connect("localhost", "root", "", "kytucxa");
     if(!$conn) {
         die("Ket noi that bai");
-    } else {
-        $sql = "SELECT * FROM taikhoan";
+    } 
+    if (isset($_POST['search'])) {
+        $search = $_POST['search'];
+        $sql = "SELECT * FROM taikhoan WHERE TenDangNhap LIKE '%$search%'";
         $result = mysqli_query($conn, $sql);
         if(mysqli_num_rows($result) > 0) {?>
             <html>
             <div>
-                <form method="GET" action="timkiemtaikhoan.php" >
-                    <input type="text" name="timkiemtaikhoan" placeholder="Tìm kiếm theo tên đăng nhập" >
+                <form method="POST" >
+                    <input type="text" name="search" placeholder="Tìm kiếm theo tên đăng nhập" >
                     <button type="submit" >Tìm kiếm</button>
                 </form>
             </div>
@@ -150,7 +152,7 @@
                 echo"<td>" .$row["MatKhau"] ."</td>";
                 echo"<td>" .$row["TenLTK"] ."</td>";
             
-                echo "<td><a href='../taikhoan/suataikhoan.php?TenDangNhap=".$row["TenDangNhap"]."' target='_blank'><button class='btn-sua'>Sửa</button></a></td>";
+                echo "<td><a href='index.php?action=suataikhoan&TenDangNhap=".$row["TenDangNhap"]."' target='_blank'><button class='btn-sua'>Sửa</button></a></td>";
                 echo "<td><a onclick='confirmDelete(\"" . $row["TenDangNhap"] . "\")'><button class='btn-xoa'>Xóa</button></a></td>";
                 echo "</tr>";
             }
@@ -159,16 +161,62 @@
         } else {
             echo "không có bản ghi";    
         }
+        ?>
+        <div>
+    <a href="index.php?action=themtaikhoan"><button class="btn-them"><b>Thêm</b></button></a>
+    <a href="index.php?action=taikhoan"><button class="btn-xuatexcel"><b>Quay Lại</b></button></a>
+</div>
+<?php
+    } else {
+        $sql = "SELECT * FROM taikhoan";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) > 0) {?>
+            <html>
+            <div>
+                <form method="POST" >
+                    <input type="text" name="search" placeholder="Tìm kiếm theo tên đăng nhập" >
+                    <button type="submit" >Tìm kiếm</button>
+                </form>
+            </div>
+            </html>
+            <?php echo "<table>";
+                echo"<thead>";
+                echo"<tr>
+                    <th>TenDangNhap</th>
+                    <th>MatKhau</th>
+                    <th>TenLTK</th>
+                    <th>Thao tác</th>
+                    </tr>
+           </thead>
+                <tbody>";
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo"<td>" .$row["TenDangNhap"] ."</td>";
+                echo"<td>" .$row["MatKhau"] ."</td>";
+                echo"<td>" .$row["TenLTK"] ."</td>";
+            
+                echo "<td><a href='index.php?action=suataikhoan&TenDangNhap=".$row["TenDangNhap"]."' target='_blank'><button class='btn-sua'>Sửa</button></a></td>";
+                echo "<td><a onclick='confirmDelete(\"" . $row["TenDangNhap"] . "\")'><button class='btn-xoa'>Xóa</button></a></td>";
+                echo "</tr>";
+            }
+            echo "</tbody>";
+            echo "</table>";
+        } else {
+            echo "không có bản ghi";    
+        }
+        ?>
+        <div>
+    <a href="index.php?action=themtaikhoan"><button class="btn-them"><b>Thêm</b></button></a>
+    <a href="index.php?action=xuattaikhoan"><button class="btn-xuatexcel"><b>Xuất Excel</b></button></a>
+</div>
+        <?php
     }
 ?>
-<div>
-    <a href="../taikhoan/themtaikhoan.php"><button class="btn-them"><b>Thêm</b></button></a>
-    <a href="../taikhoan/xuattaikhoan.php"><button class="btn-xuatexcel"><b>Xuất Excel</b></button></a>
-</div>
+
 <script>
         function confirmDelete(TenDangNhap) {
             if (confirm("Bạn có chắc chắn muốn xóa khu này không?")) {
-                window.location.href = 'xoataikhoan.php?TenDangNhap=' + TenDangNhap + '&confirm=yes';
+                window.location.href = 'index.php?action=xoataikhoan&TenDangNhap=' + TenDangNhap + '&confirm=yes';
                 alert("Xóa thành công!");
             }
         }

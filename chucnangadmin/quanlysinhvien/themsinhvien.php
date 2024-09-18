@@ -178,25 +178,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>MaPhong</td>
-                        <td>
-                            <input type="text" name="txtMaPhong">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tenkhu</td>
-                        <td>
-                            <input type="radio" name="txtTenKhu" value="khu A" required>
-                            <label for="khuA">khu A</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu B" required>
-                            <label for="khuB">khu B</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu C" required>
-                            <label for="khuC">khu C</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu D" required>
-                            <label for="khuD">khu D</label><br>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>TenDangNhap</td>
                         <td>
                             <input type="text" name="txtTenDangNhap">
@@ -229,11 +210,9 @@
         $DiaChi = $_POST['txtDiaChi'];
         $SDT = $_POST['txtSDT'];
         $Mail = $_POST['txtMail'];
-        $MaPhong = $_POST['txtMaPhong'];
-        $TenKhu = $_POST['txtTenKhu'];
         $TenDangNhap = $_POST['txtTenDangNhap'];
 
-        $sql = "INSERT INTO sinhvien (MaSV, HoTen, NgaySinh, GioiTinh, DiaChi, SDT, Mail, MaPhong, TenKhu, TenDangNhap) VALUES ('$MaSV', '$HoTen', '$NgaySinh', '$GioiTinh', '$DiaChi', '$SDT', '$Mail', '$MaPhong', '$TenKhu', '$TenDangNhap')";
+        $sql = "INSERT INTO sinhvien (MaSV, HoTen, NgaySinh, GioiTinh, DiaChi, SDT, Mail, TenDangNhap) VALUES ('$MaSV', '$HoTen', '$NgaySinh', '$GioiTinh', '$DiaChi', '$SDT', '$Mail', '$TenDangNhap')";
         $result = mysqli_query($conn, $sql);
         if ($result) { ?>
             <script>alert("Thêm thành công"); </script>

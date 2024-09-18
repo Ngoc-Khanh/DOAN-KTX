@@ -7,7 +7,9 @@ if ($conn->connect_error) {
 }
 
 if (isset($_SESSION['sv'])) {
-    $sv=$_SESSION['sv'];
+    $sv = $_SESSION['sv'];
+} else {
+    header('location: index.php?action=login');
 }
 
 $maSV = $sv['MaSV'];
@@ -28,20 +30,27 @@ if (mysqli_num_rows($result) > 0) {
 }
 
 // Xác định danh sách khu dựa vào giới tính
-if ($gioiTinh == 'nam') {
-    $danhSachKhu = array('A', 'B');
-} elseif ($gioiTinh == 'nữ') {
-    $danhSachKhu = array('C', 'D');
+if (isset($gioiTinh)) {
+    if ($gioiTinh == 'nam') {
+        $danhSachKhu = array('A', 'B');
+    } elseif ($gioiTinh == 'nữ') {
+        $danhSachKhu = array('C', 'D');
+    } else {
+        $danhSachKhu = array(); // Giới tính không xác định, không hiển thị khu nào.
+    }
 } else {
-    $danhSachKhu = array(); // Giới tính không xác định, không hiển thị khu nào.
+    // Xử lý trường hợp nếu biến $gioiTinh không được đặt giá trị.
+    $danhSachKhu = array();
 }
+
 ?>
 
 
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -115,11 +124,14 @@ if ($gioiTinh == 'nam') {
             border-collapse: collapse;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ccc;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: center;
         }
@@ -136,6 +148,7 @@ if ($gioiTinh == 'nam') {
         table tr:hover {
             background-color: #ddd;
         }
+
         .note {
             background-color: #f2f2f2;
             text-align: center;
@@ -144,49 +157,51 @@ if ($gioiTinh == 'nam') {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Đăng Ký Chuyển Phòng</h1>
 
         <?php if (isset($hoTen) && isset($maPhong)) : ?>
-        <div class="user-info">
-            <p><strong>Mã Sinh Viên:</strong> <?php echo $maSV; ?></p>
-            <p><strong>Họ Tên:</strong> <?php echo $hoTen; ?></p>
-            <p><strong>Phòng Đang Ở:</strong> <?php echo $maPhong; ?></p>
-        </div>
+            <div class="user-info">
+                <p><strong>Mã Sinh Viên:</strong> <?php echo $maSV; ?></p>
+                <p><strong>Họ Tên:</strong> <?php echo $hoTen; ?></p>
+                <p><strong>Phòng Đang Ở:</strong> <?php echo $maPhong; ?></p>
+            </div>
         <?php else : ?>
-        <p>Không tìm thấy thông tin sinh viên hoặc phòng.</p>
+            <p>Không tìm thấy thông tin sinh viên hoặc phòng.</p>
         <?php endif; ?>
 
         <div class="chuyen-phong-form">
-    <form action="index.php?action=xulydangkydkcp" method="post">
-        <label for="khu">Chọn Khu:</label>
-        <?php foreach ($danhSachKhu as $khu) : ?>
-            <input type="radio" <?php echo $khu == "A" ?>
-            <?php endforeach; ?>
-        <br>
-        <label for="lyDo">Lý Do Chuyển:</label>
-        <textarea name="lyDo" rows="4" cols="50"></textarea>
-        <br>
-        <input type="submit" name="dangKy" value="Đăng Ký Chuyển Phòng">
-    </form>
-</div>
+            <form action="index.php?action=xulydangkydkcp" method="post">
+                <label for="khu">Chọn Khu:</label>
+                    <input type="radio" name="khu" value="<?php echo $danhSachKhu[0]; ?>" >Khu <?php echo $danhSachKhu[0]; ?>
+                    <input type="radio" name="khu" value="<?php echo $danhSachKhu[1]; ?>" >Khu <?php echo $danhSachKhu[1]; ?>
+                    <br>
+                    <label for="lyDo">Lý Do Chuyển:</label>
+                    <textarea name="lyDo" rows="4" cols="50"></textarea>
+                    <br>
+                    <input type="submit" name="dangKy" value="Đăng Ký Chuyển Phòng">
+            </form>
+        </div>
 
         <h2>Danh Sách Phòng</h2>
         <table>
             <tr>
                 <th>Mã Khu</th>
+                <th>Phòng</th>
                 <th>Số Người Tối Đa</th>
                 <th>Giá</th>
             </tr>
             <?php
-            $queryPhong = "SELECT MaKhu, SoNguoiToiDa, Gia FROM phong WHERE MaKhu IN ('" . implode("', '", $danhSachKhu) . "')";
+            $queryPhong = "SELECT MaKhu, MaPhong, SoNguoiToiDa, Gia FROM phong WHERE MaKhu IN ('" . implode("', '", $danhSachKhu) . "')";
             $resultPhong = mysqli_query($conn, $queryPhong);
 
             if (mysqli_num_rows($resultPhong) > 0) {
                 while ($rowPhong = mysqli_fetch_assoc($resultPhong)) {
                     echo "<tr>";
                     echo "<td>" . $rowPhong['MaKhu'] . "</td>";
+                    echo "<td>" . $rowPhong['MaPhong'] . "</td>";
                     echo "<td>" . $rowPhong['SoNguoiToiDa'] . "</td>";
                     echo "<td>" . $rowPhong['Gia'] . "</td>";
                     echo "</tr>";
@@ -199,4 +214,5 @@ if ($gioiTinh == 'nam') {
         </div>
     </div>
 </body>
+
 </html>

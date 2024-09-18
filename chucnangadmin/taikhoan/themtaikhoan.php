@@ -70,7 +70,7 @@
 </style>
 </head>
 <body>
-    <form method="post">
+    <form method="POST">
         <div>
             <table>
                 <tbody>
@@ -83,7 +83,7 @@
                     <tr>
                         <td>MatKhau</td>
                         <td>
-                            <input type="text" name="txtMatKhau">
+                            <input type="password" name="txtMatKhau">
                         </td>
                     </tr>
                     <tr>
@@ -109,13 +109,12 @@
         $conn = mysqli_connect("localhost", "root", "", "kytucxa");
         if (!$conn) {
             die("Kết nối thất bại");
-            exit;
         }
         $TenDangNhap = $_POST['txtTenDangNhap'];
         $MatKhau = $_POST['txtMatKhau'];
         $TenLTK = $_POST['txtTenLTK'];
 
-        $sql = "INSERT INTO taikhoan ( TenDangNhap,MatKhau,TenLTK) VALUES ( '$TenDangNhap','$MatKhau', '$TenLTK')";
+        $sql = "INSERT INTO taikhoan (TenDangNhap, MatKhau, TenLTK) VALUES ( '$TenDangNhap','$MatKhau', '$TenLTK')";
         $result = mysqli_query($conn, $sql);
         if (!$result) {
             echo "Insert error";
@@ -124,6 +123,6 @@
         }
     }
     ?>
-    <a href="../admin"><button><b>Quay lại trang đầu</b></button></a>
+    <a href="index.php?action=taikhoan"><button><b>Quay lại trang đầu</b></button></a>
 </body>
 </html>

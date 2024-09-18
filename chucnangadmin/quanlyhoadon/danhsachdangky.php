@@ -6,8 +6,6 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
         }
 
         header {
@@ -18,15 +16,12 @@
         }
 
         h1 {
-            margin: 0;
             font-size: 36px;
             font-weight: bold;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+            max-width: 1000px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -79,7 +74,6 @@
         }
 
         form {
-            margin: 20px 0;
             text-align: center;
         }
 
@@ -110,7 +104,7 @@
     </header>
 
     <!-- Tạo biểu mẫu tìm kiếm -->
-    <form method="post">
+    <form method="POST">
         <div style="text-align: center; margin: 10px 0;">
             <input type="text" name="search" placeholder="Tìm kiếm theo mã phòng...">
             <input type="submit" value="Tìm kiếm">
@@ -143,16 +137,17 @@
             echo "<td>" . $row['SoNguoiToiDa'] . "</td>";
             echo "<td>" . $row['SoNguoiHienTai'] . "</td>";
             echo "<td>" . $row['Gia'] . "</td>";
-            echo "<td><a class='btn-them' href='../quanlyhoadon/main.php?MaPhong=" . $row['MaPhong'] . "'>Thêm</a></td>";
+            echo "<td><a class='btn-them' href='index.php?action=themhoadon&MaPhong=" . $row['MaPhong'] . "'>Thao Tác</a></td>";
             echo "</tr>";
         }
         echo "</table>";
     } else {
         echo "Không có dữ liệu phòng.";
     }
-
+    if (isset($_POST['search'])) { ?>
+        <a href="index.php?action=hoadon"><button class="btn-xuatexcel"><b>Quay Lại</b></button></a>
+    <?php }
     $conn->close();
     ?>
-    <a href="themkhu.php"><button class="btn-xuatexcel"><b>Xuất Excel</b></button></a>
 </body>
 </html>

@@ -1,54 +1,58 @@
 <?php
+session_start(); // Bắt buộc khởi động session ở đầu file
 
-    $conn = new mysqli("localhost", "root", "", "kytucxa");
+if (!isset($_SESSION['sv'])) {
+    echo "<script type='text/javascript'>alert('Bạn chưa đăng nhập!');</script>";
+    header('location: index.php'); // Điều hướng về trang đăng nhập
+    exit(); // Dừng việc thực thi mã PHP sau khi điều hướng
+}
 
-    if ($conn->connect_error) {
-        die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
-    }
+$sv = $_SESSION['sv'];
+$maSV = $sv['MaSV'];
 
-    // Lấy thông tin số người mà người dùng đã chọn
-    if (isset($_POST['SoNguoi'])) {
+$conn = mysqli_connect("localhost", "root", "", "kytucxa");
+
+if ($conn->connect_error) {
+    die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
+}
+
+$sql1 = "SELECT MaPhong FROM sinhvien WHERE MaSV = '$maSV'";
+$result1 = mysqli_query($conn, $sql1);
+$row1 = mysqli_fetch_assoc($result1);
+
+
+if ($row1['MaPhong'] != NULL) {
+    echo "<script type='text/javascript'>alert('Đăng ký phòng không thành công! Bạn đã có phòng!');</script>";
+} else {
+    if (isset($_POST['SoNguoi'], $_POST['khu'])) {
         $soNguoiChon = $_POST['SoNguoi'];
-    }
+        $maKhu = $_POST['khu'];
 
-    // Lấy thông tin mã khu dựa trên giới tính của người dùng
-    $maKhu = $_POST['khu']; // Điền mã khu ứng với giới tính của người dùng
+        $sql = "SELECT MaPhong FROM phong WHERE SoNguoiToiDa = $soNguoiChon AND MaKhu = '$maKhu' AND SoNguoiHienTai < SoNguoiToiDa LIMIT 1";
+        $result = $conn->query($sql);
 
-    // Tìm phòng phù hợp với số người tối đa và mã khu
-    $sql = "SELECT MaPhong FROM phong WHERE SoNguoiToiDa = $soNguoiChon AND MaKhu = '$maKhu' AND SoNguoiHienTai < SoNguoiToiDa";
-    $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $maPhong = $row['MaPhong'];
 
-    if ($result->num_rows > 0) {
-        // Lấy phòng phù hợp đầu tiên từ kết quả truy vấn
-        $row = $result->fetch_assoc();
-        $maPhong = $row['MaPhong'];
+            $ngayDangKy = date("Y-m-d");
+            $tinhTrang = "chưa duyệt";
 
-        // Lấy thông tin Mã SV và Họ tên của sinh viên đã đăng nhập
-        // $maSV = $_SESSION['MaSV'];
-        // $hoTen = $_SESSION['HoTen'];
-        if (isset($_SESSION['sv'])) {
-            $sv=$_SESSION['sv'];
-            $maSV = $sv['MaSV'];}
-        // Thêm thông tin đăng ký phòng vào bảng dangkyphong
-        $ngayDangKy = date("Y-m-d"); // Lấy ngày hiện tại
-        $tinhTrang = "chưa duyệt"; // Tùy theo quy trình của bạn
-
-        $sql = "INSERT INTO dangkyphong (MaPhong, MaSV, NgayDangKy, TinhTrang) VALUES ('$maPhong', '$maSV', '$ngayDangKy', '$tinhTrang')";
-        // if ($conn->query($sql) === TRUE) {
-        //     // Cập nhật số người hiện tại trong bảng phong
-        //     $sql = "UPDATE phong SET SoNguoiHienTai = SoNguoiHienTai + 1 WHERE MaPhong = '$maPhong'";
-            if ($conn->query($sql) == TRUE) {
-                // Gửi thông báo cho người dùng và điều hướng về trang chính
-                echo "<script type='text/javascript'>alert('Đăng ký phòng thành công!')</script>";
-            // } else {
-            //     echo "Lỗi cập nhật số người hiện tại: " . $conn->error;
-            // }
+            $sqlInsert = "INSERT INTO dangkyphong (MaPhong, MaSV, NgayDangKy, TinhTrang) VALUES ('$maPhong', '$maSV', '$ngayDangKy', '$tinhTrang')";
+            if ($conn->query($sqlInsert) === TRUE) {
+                echo "<script type='text/javascript'>alert('Đăng ký phòng thành công!');</script>";
+            } else {
+                echo "<script type='text/javascript'>alert('Đăng ký phòng không thành công!');</script>";
+            }
         } else {
-            echo "<script type='text/javascript'>alert('Đăng ký phòng không thành công!')</script>";
+            echo "<script type='text/javascript'>alert('Không có phòng phù hợp!');</script>";
         }
     } else {
-        echo "Không có phòng phù hợp.";
+        echo "<script type='text/javascript'>alert('Vui lòng chọn số người và khu phòng!');</script>";
     }
-    header('location: index.php?action=dangkyphong');
-    $conn->close();
+}
+
+$conn->close();
+header('location: index.php?action=dkphong');
+exit(); // Dừng việc thực thi mã PHP sau khi điều hướng
 ?>

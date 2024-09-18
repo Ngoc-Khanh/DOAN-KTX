@@ -43,11 +43,15 @@ if (isset($_SESSION['sv'])) {
                 $insertQuery = "INSERT INTO chuyenphong (MaSV, MaPhong, MaPhongChuyen, LyDo, TinhTrang, NgayDangKy)
                                 VALUES ('$maSV', '$maPhongDangO', '$maPhong', '$lyDo', 'Chờ Duyệt', '$ngayDangKy')";
 
+                //thêm mã phòng vào cột phòng trong bảng sinh viên
+                $firstLetter = substr($maPhong, 0, 1); // Lấy chữ cái đầu tiên của $maPhong
+                $sql1 = "UPDATE sinhvien SET MaPhong = '$maPhong', TenKhu = CONCAT('Khu ', '$firstLetter') WHERE MaSV = '$maSV'";
+                $query1 = mysqli_query($conn, $sql1);
+
                 if (mysqli_query($conn, $insertQuery)) {
                     // Đăng ký thành công, chuyển hướng và hiển thị thông báo
-                    echo "<script>alert('Đăng ký thành công');</script>";
-                    header("Location: index.php?action=chuyenphong?success=1");
-                    exit();
+                    echo "<script type='text/javascript'>alert('Đăng ký thành công');</script>";
+                    header("Location: index.php?action=chuyenphong&success=1");
                 } else {
                     echo "Lỗi khi đăng ký chuyển phòng: " . mysqli_error($conn);
                 }

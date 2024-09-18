@@ -10,7 +10,7 @@
         die("Ket noi that bai");
     }
     else{
-        if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
+        if (isset($_GET['confirm']) && $_GET['confirm'] == 'yes') {
         $sql = "DELETE FROM khu WHERE MaKhu='".$_GET['MaKhu']."'";
         $result = mysqli_query($conn, $sql);
         if(!$result){
@@ -20,7 +20,7 @@
         }
     }
 }
-    header("location: khu.php");
+    header("location: index.php?action=khu");
     ?>
     </body>
 </html>

@@ -133,7 +133,7 @@
     }
     
     if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['btnGhi'])) {
-        $sql1 = "UPDATE sinhvien SET HoTen = '" . $_POST['txtHoTen'] . "', NgaySinh = '" . $_POST['txtNgaySinh'] . "', GioiTinh = '" . $_POST['txtGioiTinh'] . "', DiaChi = '" . $_POST['txtDiaChi'] . "', SDT = '" . $_POST['txtSDT'] . "', Mail = '" . $_POST['txtMail'] . "', MaPhong = '" . $_POST['txtMaPhong'] . "', TenKhu = '" . $_POST['txtTenKhu'] . "', TenDangNhap = '" . $_POST['txtTenDangNhap'] . "' WHERE MaSV = '" . $_POST['txtMaSV'] . "'";
+        $sql1 = "UPDATE sinhvien SET HoTen = '" . $_POST['txtHoTen'] . "', NgaySinh = '" . $_POST['txtNgaySinh'] . "', GioiTinh = '" . $_POST['txtGioiTinh'] . "', DiaChi = '" . $_POST['txtDiaChi'] . "', SDT = '" . $_POST['txtSDT'] . "', Mail = '" . $_POST['txtMail'] . "', TenDangNhap = '" . $_POST['txtTenDangNhap'] . "' WHERE MaSV = '" . $_POST['txtMaSV'] . "'";
         $result1 = mysqli_query($conn, $sql1);
         if ($result1) {
             echo "Sửa thông tin thành công";
@@ -178,9 +178,9 @@
                     <tr>
                         <td>GioiTinh</td>
                         <td>
-                            <input type="radio" name="txtGioiTinh" value="nam" required>
+                            <input type="radio" name="txtGioiTinh" value="nam" <?php if ($row['GioiTinh'] == "nam") echo "checked"; ?>>
                             <label for="nam">Nam</label><br>
-                            <input type="radio" name="txtGioiTinh" value="nữ" required>
+                            <input type="radio" name="txtGioiTinh" value="nữ" <?php if ($row['GioiTinh'] == "nữ") echo "checked"; ?>>
                             <label for="nu">Nữ</label><br>
                         </td>
                     </tr>
@@ -200,25 +200,6 @@
                         <td>Mail</td>
                         <td>
                             <input type="text" name="txtMail" value="<?php echo $row['Mail']; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>MaPhong</td>
-                        <td>
-                            <input type="text" name="txtMaPhong" value="<?php echo $row['MaPhong']; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>TenKhu</td>
-                        <td>
-                            <input type="radio" name="txtTenKhu" value="khu A" required>
-                            <label for="khuA">khu A</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu B" required>
-                            <label for="khuB">khu B</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu C" required>
-                            <label for="khuC">khu C</label><br>
-                            <input type="radio" name="txtTenKhu" value="khu D" required>
-                            <label for="khuD">khu D</label><br>
                         </td>
                     </tr>
                     <tr>

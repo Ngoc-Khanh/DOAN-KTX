@@ -22,7 +22,7 @@
     <link href="../template/css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../shoponi/view/bootstrap4/css/bootstrap.css">
    
-    <title>Admin Pages</title>
+    <title>Admin Page</title>
     <div class="main-body" style="width: 100%">
     <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
@@ -30,7 +30,7 @@
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                 <i class="fa fa-bars"></i>  
               </button>
-               <h3 > ADMIM - PAGE</h3>
+               <h3 > ADMIN - PAGE</h3>
                <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,15 +68,15 @@
   
   <div class="col-2" style="margin-left: -25px; margin-top: -20px;margin-right: 10px;">
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
               <div class="sidebar-brand-icon rotate-n-15">
                   <i class="fas fa-laugh-wink"></i>
               </div>
-              <div class="sidebar-brand-text mx-3">Admin Pages</div>
+              <div class="sidebar-brand-text mx-3">Admin Page</div>
             </a>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-              <a class="nav-link" href="index.html">
+              <a class="nav-link" href="index.php">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
             </li>
@@ -117,12 +117,12 @@
               <li class="nav-item">
               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#danhmuc" aria-expanded="true" aria-controls="danhmuc">
                   <i class="fas fa-poll-h"></i>
-                  <span>Quản Lý Chuyển & Trả Phòng</span>  
+                  <span>Quản Lý Trả Phòng</span>  
               </a>
               <div id="danhmuc" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                  
-                  <a class="collapse-item" href="index.php?action=quanlychuyenphong&view=quanlychuyenphong">Xử Lý Đ/K Chuyển Phòng</a>
+                  <!-- <a class="collapse-item" href="index.php?action=quanlychuyenphong&view=quanlychuyenphong">Xử Lý Đ/K Chuyển Phòng</a> -->
                   
                   <a class="collapse-item" href="index.php?action=quanlytraphong&view=quanlytraphong">Xử Lý Đ/K Trả Phòng</a>
                 </div>
@@ -136,7 +136,7 @@
               </a>
               <div id="hoadon" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">          
-                  <a class="collapse-item" href="index.php?action=quanlyhoadon&view=quanlyhoadon">Hóa đơn</a>
+                  <a class="collapse-item" href="index.php?action=hoadon&view=quanlyhoadon">Hóa đơn</a>
                 </div>
               </div>
             </li>
@@ -162,8 +162,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                  
                   <a class="collapse-item" href="index.php?action=quanlyphong&view=quanlyphong">Phòng</a>
-                  <a class="collapse-item" href="index.php?action=csvc&view=csvc">Các cơ sở vật chất</a>
-                  <a class="collapse-item" href="index.php?action=csvcphong&view=csvcphong">Cơ sở vật chất của phòng</a>
+                  <!-- <a class="collapse-item" href="index.php?action=csvc&view=csvc">Các cơ sở vật chất</a>
+                  <a class="collapse-item" href="index.php?action=csvcphong&view=csvcphong">Cơ sở vật chất của phòng</a> -->
                 </div>
               </div>
             </li>
@@ -171,7 +171,7 @@
              <li class="nav-item">
               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#taikhoan" aria-expanded="true" aria-controls="taikhoan">
                   <i class="fas fa-poll-h"></i>
-                  <span>Quản Lý tài khoản</span>
+                  <span>Quản Lý Tài Khoản</span>
               </a>
               <div id="taikhoan" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -189,7 +189,7 @@
               </a>
               <div id="nv" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="index.php?action=nhanvien&view=all">Tất cả nhân viên</a>
+                  <a class="collapse-item" href="index.php?action=khu&view=all">Danh sách khu</a>
                 </div>
               </div>
             </li>
@@ -280,8 +280,23 @@
                     case 'xuatexcelquanlyguixe':
                         include('../quanlyguixe/exportexcel.php');
                         break;  
-                    case 'quanlyhoadon':
+                    case 'hoadon':
                         include('../quanlyhoadon/danhsachdangky.php');
+                        break;
+                    case 'themhoadon':
+                        include('../quanlyhoadon/themhoadon.php');
+                        break;
+                    case 'thuhoadon':
+                        include('../quanlyhoadon/thu_hoa_don.php');
+                        break;
+                    case 'xemhoadon':
+                        include('../quanlyhoadon/xemhoadon.php');
+                        break;
+                    case 'xoahoadon':
+                        include('../quanlyhoadon/xoa_hoa_don.php');
+                        break;
+                    case 'xuathoadon':
+                        include('../quanlyhoadon/xuathoadon.php');
                         break;
                     case 'quanlyblog':
                         include('../quanlyblog/admin.php');
@@ -328,6 +343,18 @@
                     case 'taikhoan':
                         include('../taikhoan/danhsachtaikhoan.php');
                         break;
+                    case 'themtaikhoan':
+                        include('../taikhoan/themtaikhoan.php');
+                        break;
+                    case 'suataikhoan':
+                        include('../taikhoan/suataikhoan.php');
+                        break;
+                    case 'xoataikhoan':
+                        include('../taikhoan/xoataikhoan.php');
+                        break;
+                    case 'xuattaikhoan':
+                        include('../taikhoan/xuattaikhoan.php');
+                        break;
                     case 'nhanvien':
                         include('../nhanvien/danhsachnhanvien.php');
                         break;
@@ -364,6 +391,21 @@
                     case 'xuatsinhvien':
                         include('../quanlysinhvien/xuatsinhvien.php');
                         break;                     
+                    case 'khu':
+                        include('../khu/khu.php');
+                        break;                     
+                    case 'suakhu':
+                        include('../khu/suakhu.php');
+                        break;                     
+                    case 'themkhu':
+                        include('../khu/themkhu.php');
+                        break;                     
+                    case 'xoakhu':
+                        include('../khu/xoakhu.php');
+                        break;                     
+                    case 'xuatkhu':
+                        include('../khu/xuatkhu.php');
+                        break;                     
                   
                     default:
                          
@@ -377,6 +419,12 @@
       }
 
     ?>
+    <script type="text/javascript">
+        function homePage() {
+                window.location.href = 'http://localhost/ktxxxxxx/chucnangadmin/admin/index.php';
+            }
+    </script>
+    
   </div>
 
 <?php }?>

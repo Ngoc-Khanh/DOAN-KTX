@@ -73,7 +73,6 @@
         $conn = mysqli_connect("localhost", "root", "", "kytucxa");
         if (!$conn) {
             die("Kết nối thất bại");
-            exit;
         }
         $sql= "UPDATE khu SET TenKhu = '".$TenKhu."', GioiTinh='".$GioiTinh."' WHERE MaKhu = '".$MaKhu."'";
         
@@ -82,11 +81,11 @@
             echo "Update error" . mysqli_error($conn);
         } else {
             echo "<script> type ='text/javascript'> alert('Cập nhật thành công');</script>";
-            header('Location: khu.php');
+            header('Location: index.php?action=khu');
         }
     }
     ?>
 
-    <a href="khu.php">Home</a>
+    <a href="index.php?action=khu">Home</a>
 </body>
 </html>

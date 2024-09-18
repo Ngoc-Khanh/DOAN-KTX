@@ -14,11 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['btnGhi'])) {
     $sqlCheckExist = "SELECT * FROM taikhoan WHERE TenDangNhap = '$TenDangNhapMoi'";
     $resultCheckExist = mysqli_query($conn, $sqlCheckExist);
 
-    if (mysqli_num_rows($resultCheckExist) > 0) {
+    if (mysqli_num_rows($resultCheckExist) > 1) {
         echo "Lỗi: Tên đăng nhập đã tồn tại. Vui lòng chọn tên đăng nhập khác.";
     } else {
         // Tiếp tục cập nhật thông tin tài khoản
-        $sqlUpdate = "UPDATE taikhoan SET TenDangNhap = '$TenDangNhapMoi', MatKhau = '" . $_POST['txtMatKhau'] . "', TenLTK = '" . $_POST['txtTenLTK'] . "' WHERE TenDangNhap = '" . $TenDangNhap . "'";
+        $sqlUpdate = "UPDATE taikhoan SET TenDangNhap = '$TenDangNhapMoi', MatKhau = '" . $_POST['txtMatKhau'] . "' WHERE TenDangNhap = '" . $TenDangNhap . "'";
         $resultUpdate = mysqli_query($conn, $sqlUpdate);
 
         if ($resultUpdate) {
@@ -118,23 +118,15 @@ if (mysqli_num_rows($result) > 0) {
             <table>
                 <tbody>
                     <tr>
-                        <td>Mã Khu</td>
+                        <td>Tên Đăng Nhập</td>
                         <td>
                             <input type="text" name="txtTenDangNhap" value="<?php echo $row['TenDangNhap']; ?>" >
                         </td>
                     </tr>
                     <tr>
-                        <td>Tên Khu</td>
+                        <td>Mật Khẩu</td>
                         <td>
-                            <input type="text" name="txtMatKhau" value="<?php echo $row['MatKhau']; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Giới tính</td>
-                        <td>
-                            <input type="radio" name="gender" value="male"> Nam
-                            <input type="radio" name="gender" value="female"> Nữ
-
+                            <input type="password" name="txtMatKhau" value="<?php echo $row['MatKhau']; ?>">
                         </td>
                     </tr>
                     <tr>
@@ -147,6 +139,6 @@ if (mysqli_num_rows($result) > 0) {
             </table>
         </div>
     </form>
-    <a href="../admin"><button>Quay lại trang chủ</button></a>
+    <a href="index.php?action=taikhoan"><button>Quay lại</button></a>
 </body>
 </html>

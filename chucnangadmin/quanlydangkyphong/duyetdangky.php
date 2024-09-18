@@ -11,7 +11,7 @@ if (isset($_SESSION['nv'])) {
 
 $madk = $_GET['madk'];
 $manv = $nv['MaNV'];
-$manv = $_GET['MaNV']; // sao mã nhân viên dùng của sv :v
+$MaSV = $_GET['MaSV'];
 $sql = "UPDATE dangkyphong SET MaNV = '$manv', TinhTrang='đã duyệt' WHERE MaDK = '$madk'";
 $rs = mysqli_query($conn, $sql);
 
@@ -23,23 +23,13 @@ if ($rs) {
 		$sql9 = "UPDATE phong SET SoNguoiHienTai = SoNguoiHienTai + 1 WHERE MaPhong = '" . $row['MaPhong'] . "'";
 		$query9=mysqli_query($conn, $sql9);
         $maPhong = $row['MaPhong'];
-        
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $date = getdate();
-        $ngay = $date['year']."-".$date['mon']."-".($date['mday']+3)." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
-        $td = "Thông Báo Đăng Ký Phòng Ký Túc Xá";
-        $nd = "Bạn đã đăng ký phòng thành công ! Phòng: $maPhong. Vui lòng lên ký túc xá để thanh toán tiền phòng và nhận phòng trước $ngay. Nếu không lên nhận phòng hệ thống sẽ hủy phòng của bạn và thêm bạn vào danh sách Xấu. Xin Cảm ơn !!!";
 
-        $masv = $_GET['MaSV'];
-        $ngayTB = date('Y/m/d'); // Lấy ngày/tháng/năm hiện tại
-
-        $sql2 = "INSERT INTO `thongbao`(`MaSV`, `TieuDe`, `NoiDung`) VALUES ('$masv', '$td', '$nd')";
-        $rs2 = mysqli_query($conn, $sql2);
-
-        echo '<script type="text/javascript">';
-        echo 'alert("Thành công!");';
-        echo '</script>';
-        header("location: index.php?action=danhsachdaduyetqldkp");
+        //thêm mã phòng vào cột phòng trong bảng sinh viên
+        $firstLetter = substr($maPhong, 0, 1); // Lấy chữ cái đầu tiên của $maPhong
+        $sql1 = "UPDATE sinhvien SET MaPhong = '$maPhong', TenKhu = CONCAT('Khu ', '$firstLetter') WHERE MaSV = '$MaSV'";
+        $result1 = mysqli_query($conn, $sql1);
+        header("location: index.php?action=quanlydangkyphong");
     }
 }
+
 ?>

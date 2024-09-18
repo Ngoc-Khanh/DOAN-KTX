@@ -1,132 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUẢN LÝ KHU</title>
 </head>
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 36px;
-            font-weight: bold;
-        }
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    h1 {
+        margin: 0;
+        font-size: 36px;
+        font-weight: bold;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-        th {
-            background-color: #333;
-            color: #fff;
-        }
+    th,
+    td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+    th {
+        background-color: #333;
+        color: #fff;
+    }
 
-        .btn-sua {
-            background-color: #FFC30F;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-        .btn-xoa {
-            background-color: #ff6b6b;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
+    .btn-sua {
+        background-color: #FFC30F;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
 
-        .btn-sua:hover, .btn-xoa:hover {
-            opacity: 0.8;
-        }
+    .btn-xoa {
+        background-color: #ff6b6b;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
 
-        .btn-them {
-            background-color: #096BFF;
-            color: #fff;
-            border: none;
-            padding: 12px 33px; 
-            margin: 20px 0; 
-            cursor: pointer;
-            display: inline-block; 
-        }
+    .btn-sua:hover,
+    .btn-xoa:hover {
+        opacity: 0.8;
+    }
 
-        .btn-xuatexcel {
-            background-color: #1E6C41;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            margin: 20px 10px 20px 0; 
-            cursor: pointer;
-            display: inline-block; 
-        }
+    .btn-them {
+        background-color: #096BFF;
+        color: #fff;
+        border: none;
+        padding: 12px 33px;
+        margin: 20px 0;
+        cursor: pointer;
+        display: inline-block;
+    }
 
-        .btn-them:hover, .btn-xuatexcel:hover {
-            opacity: 0.8;
-        }
+    .btn-xuatexcel {
+        background-color: #1E6C41;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        margin: 20px 10px 20px 0;
+        cursor: pointer;
+        display: inline-block;
+    }
 
-        form {
-            margin: 20px 0;
-            text-align: center;
-        }
+    .btn-them:hover,
+    .btn-xuatexcel:hover {
+        opacity: 0.8;
+    }
 
-        input[type="text"] {
-            padding: 10px;
-            width: 60%;
-        }
+    form {
+        margin: 20px 0;
+        text-align: center;
+    }
 
-        button[type="submit"] {
-            background-color: #ccc5c5;
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
+    input[type="text"] {
+        padding: 10px;
+        width: 60%;
+    }
+
+    button[type="submit"] {
+        background-color: #ccc5c5;
+        color: #333;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
 </style>
+
 <body>
     <?php
     $conn = mysqli_connect("localhost", "root", "", "kytucxa");
-    if(!$conn) {
+    if (!$conn) {
         die("Ket noi that bai");
-    } else {
-        $sql = "SELECT * FROM khu";
+    }
+    if (isset($_POST['search'])) {
+        $search = $_POST['search'];
+        $sql = "SELECT * FROM khu WHERE MaKhu LIKE '%$search%' OR TenKhu LIKE '%$search%'";
         $result = mysqli_query($conn, $sql);
-        if(mysqli_num_rows($result) > 0) {?>
-        <html>
+        if (mysqli_num_rows($result) > 0) { ?>
+            <html>
             <div>
                 <form method="POST">
                     <input type="text" name="search" placeholder="Tìm kiếm theo tên hoặc mã khu">
@@ -135,9 +142,52 @@
             </div>
 
             </html>
-            <?php echo "<table>";
-                echo"<thead>";
-                echo"<tr>
+        <?php echo "<table>";
+            echo "<thead>";
+            echo "<tr>
+                        <th>Mã Khu</th>
+                        <th>Tên Khu</th>
+                        <th>Giới Tính</th>
+                        <th colspan='2'>Thao Tác</th>
+                        </tr>
+               </thead>
+                    <tbody>";
+            while ($row = mysqli_fetch_assoc($result)) {
+                $MaKhu = $row['MaKhu'];
+                echo "<tr>";
+                echo "<td>" . $MaKhu . "</td>";
+                echo "<td>" . $row["TenKhu"] . "</td>";
+                echo "<td>" . $row["GioiTinh"] . "</td>";
+                echo "<td><a href='index.php?action=suakhu&MaKhu=" . $MaKhu . "'><button class='btn-sua'>Sửa</button></a></td>";
+                echo "<td><a onclick='confirmDelete(\"" . $MaKhu . "\")'><button class='btn-xoa'>Xóa</button></a></td>";
+                echo "</tr>";
+            }
+            echo "</tbody>";
+            echo "</table>";
+        } else {
+            echo "không có bản ghi";
+        } ?>
+        <div>
+            <a href="index.php?action=themkhu"><button class="btn-them"><b>Thêm</b></button></a>
+            <a href="index.php?action=khu"><button class="btn-xuatexcel"><b>Quay Lại</b></button></a>
+        </div>
+        <?php
+    } else {
+        $sql = "SELECT * FROM khu";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) { ?>
+            <html>
+            <div>
+                <form method="POST">
+                    <input type="text" name="search" placeholder="Tìm kiếm theo tên hoặc mã khu">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            </html>
+        <?php echo "<table>";
+            echo "<thead>";
+            echo "<tr>
                     <th>Mã Khu</th>
                     <th>Tên Khu</th>
                     <th>Giới Tính</th>
@@ -145,33 +195,38 @@
                     </tr>
            </thead>
                 <tbody>";
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_array($result)) {
+                $MaKhu = $row['MaKhu'];
                 echo "<tr>";
-                echo"<td>" .$row["MaKhu"] ."</td>";
-                echo"<td>" .$row["TenKhu"] ."</td>";
-                echo"<td>" .$row["GioiTinh"] ."</td>";
-                echo "<td><a href='suakhu.php?MaKhu=".$row["MaKhu"]."'><button class='btn-sua'>Sửa</button></a></td>";
-                echo "<td><a onclick='confirmDelete(\"" . $row["MaKhu"] . "\")'><button class='btn-xoa'>Xóa</button></a></td>";
+                echo "<td>" . $MaKhu . "</td>";
+                echo "<td>" . $row["TenKhu"] . "</td>";
+                echo "<td>" . $row["GioiTinh"] . "</td>";
+                echo "<td><a href='index.php?action=suakhu&MaKhu=" . $MaKhu . "'><button class='btn-sua'>Sửa</button></a></td>";
+                echo "<td><a onclick='confirmDelete(\"" . $MaKhu . "\")'><button class='btn-xoa'>Xóa</button></a></td>";
                 echo "</tr>";
             }
             echo "</tbody>";
             echo "</table>";
         } else {
-            echo "không có bản ghi";    
+            echo "không có bản ghi";
         }
+        ?>
+        <div>
+            <a href="index.php?action=themkhu"><button class="btn-them"><b>Thêm</b></button></a>
+            <a href="index.php?action=xuatkhu"><button class="btn-xuatexcel"><b>Xuất Excel</b></button></a>
+        </div>
+    <?php
     }
-?>
-<div>
-    <a href="themkhu.php"><button class="btn-them"><b>Thêm</b></button></a>
-    <a href="xuatkhu.php"><button class="btn-xuatexcel"><b>Xuất Excel</b></button></a>
-</div>
-<script>
+    ?>
+
+    <script>
         function confirmDelete(MaKhu) {
             if (confirm("Bạn có chắc chắn muốn xóa khu này không?")) {
-                window.location.href = 'xoakhu.php?MaKhu=' + MaKhu + '&confirm=yes';
+                window.location.href = 'index.php?action=xoakhu&MaKhu=' + MaKhu + '&confirm=yes';
                 alert("Xóa thành công!");
             }
         }
-</script>
+    </script>
 </body>
+
 </html>

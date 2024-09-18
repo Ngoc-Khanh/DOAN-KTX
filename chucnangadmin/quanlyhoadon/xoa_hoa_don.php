@@ -1,6 +1,7 @@
 <?php
-if (isset($_GET['MaHD'])) {
+if (isset($_GET['MaHD']) && isset($_GET['MaPhong'])) {
     $maHD = $_GET['MaHD'];
+    $maPhong = $_GET['MaPhong'];
 
     // Kết nối đến cơ sở dữ liệu
     $conn = mysqli_connect("localhost", "root", "", "kytucxa");
@@ -22,6 +23,6 @@ if (isset($_GET['MaHD'])) {
 } else {
     echo "Không có thông tin MaHD để xóa.";
 }
-header("location: danhsachdangky.php");
+header("location: index.php?action=themhoadon&MaPhong=" . $maPhong . "");
 
 ?>

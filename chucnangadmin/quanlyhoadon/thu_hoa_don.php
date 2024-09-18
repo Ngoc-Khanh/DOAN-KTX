@@ -11,11 +11,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Cập nhật trạng thái của hóa đơn sang 'Đã Thu'
     $updateSql = "UPDATE hoadon SET TinhTrang = 'DaThu' WHERE MaHD = '$maHD'";
     if ($conn->query($updateSql) === TRUE) {
-        http_response_code(200); // Đáp ứng thành công
+        ?>
+        <script type="text/javascript">
+        <?php 
+        echo 'alert("Thu hóa đơn thành công!");';
+        ?>
+        </script>
+    <?php
     } else {
-        http_response_code(500); // Lỗi máy chủ
+        ?>
+        <script type="text/javascript">
+        <?php echo 'alert("Thu hóa đơn thất bại!");'; ?>
+        </script>
+        <?php
     }
-
     $conn->close();
 }
 ?>

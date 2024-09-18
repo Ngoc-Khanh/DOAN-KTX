@@ -24,7 +24,7 @@ $spreadsheet = new Spreadsheet();
 // Bước 4: Tạo một trang tính mới
 $sheet = $spreadsheet->getActiveSheet();
 
-$columnHeaders = ['Tên Đăng Nhập', 'Mật Khẩu', 'Tên Loại Tài Khoản'];
+$columnHeaders = ['Mã Khu', 'Tên Khu', 'Giới Tính'];
 
 // Xuất dòng tiêu đề
 $col = 'A';
@@ -36,7 +36,7 @@ foreach ($columnHeaders as $header) {
 }
 
 // Bước 5: Thực hiện truy vấn để lấy dữ liệu từ MySQL
-$sql = "SELECT * FROM taikhoan";
+$sql = "SELECT * FROM khu";
 $result = $conn->query($sql);
 
 // Bước 6: Ghi dữ liệu từ MySQL vào trang tính Excel
@@ -57,7 +57,7 @@ $writer = new Xlsx($spreadsheet);
 
 // Bước 8: Đặt header để trình duyệt hiển thị tệp Excel
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment; filename="danhsachtaikhoan.xlsx"');
+header('Content-Disposition: attachment; filename="danhsachkhu.xlsx"');
 header('Cache-Control: max-age=0');
 ob_clean();
 

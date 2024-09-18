@@ -162,7 +162,7 @@
                     echo"<td>" .$row["MaSV"] ."</td>";
                     echo"<td>" .$row["HoTen"] ."</td>";
                     echo"<td>" .$row["NgaySinh"] ."</td>";
-                    echo "<td>" . ($row["GioiTinh"] == 1 ? "Nam" : "Nữ") . "</td>";
+                    echo "<td>" . $row["GioiTinh"] . "</td>";
                     echo"<td>" .$row["DiaChi"] ."</td>";
                     echo"<td>" .$row["SDT"] ."</td>";
                     echo"<td>" .$row["Mail"] ."</td>";
@@ -218,7 +218,7 @@
                 echo"<td>" .$row["MaSV"] ."</td>";
                     echo"<td>" .$row["HoTen"] ."</td>";
                     echo"<td>" .$row["NgaySinh"] ."</td>";
-                    echo "<td>" . ($row["GioiTinh"] == 1 ? "Nam" : "Nữ") . "</td>";
+                    echo "<td>" . $row["GioiTinh"] . "</td>";
                     echo"<td>" .$row["DiaChi"] ."</td>";
                     echo"<td>" .$row["SDT"] ."</td>";
                     echo"<td>" .$row["Mail"] ."</td>";

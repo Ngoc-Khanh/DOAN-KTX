@@ -21,7 +21,7 @@
             }
         }
     }
-    header("location: danhsachtaikhoan.php");
+    header("location: index.php?action=taikhoan&view=taikhoan");
     ?>
 </body>
 </html>

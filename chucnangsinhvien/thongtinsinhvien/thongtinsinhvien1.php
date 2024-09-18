@@ -5,6 +5,7 @@
         $sql = "SELECT * FROM sinhvien WHERE MaSV = '$masv'";
         $rs = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($rs);
+        $gioiTinh = $row['GioiTinh'];
 ?>
 
 <head>
@@ -76,8 +77,8 @@
                 <span>Giới Tính </span>
                     <div>
                         <select name="gioiTinh" required>
-                            <option value="nam" <?php if(isset($_POST['gioiTinh']) && $_POST['gioiTinh'] == 'nam') echo 'selected' ?>>Nam</option>
-                            <option value="nữ" <?php if(isset($_POST['gioiTinh']) && $_POST['gioiTinh'] == 'nữ') echo 'selected' ?>>Nữ</option>
+                            <option value="nam" <?php if($gioiTinh== 'nam') echo 'selected' ?>>Nam</option>
+                            <option value="nữ" <?php if($gioiTinh== 'nữ') echo 'selected' ?>>Nữ</option>
                         </select>
                     </div>
                 <hr>
@@ -89,6 +90,11 @@
                 <span>Quê quán </span>
                 <div>
                     <input type="text" id="inputText" name="dc" value="<?php echo $row['DiaChi'] ?>" required>
+                </div>
+                <hr>
+                <span>Phòng đang ở</span>
+                <div>
+                    <input type="text" id="inputText" name="phong" value="<?php echo $row['MaPhong'] ?>" disabled  >
                 </div>
                 <hr>
                 <span>Số điện thoại </span>

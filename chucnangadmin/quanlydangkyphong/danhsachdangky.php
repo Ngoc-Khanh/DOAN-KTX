@@ -4,7 +4,7 @@ if (!$conn) {
 	die("Ket noi that bai");
 }
 // $sql = "select * from dangkyphong where TinhTrang='chưa duyệt' and NgayDangKy is not null and NgayTraPhong is null Order  by NgayDangKy DESC ";
-$sql = "select * from dangkyphong";
+$sql = "select * from dangkyphong where TinhTrang='chờ duyệt trả' or TinhTrang='chưa duyệt'";
 $rs = mysqli_query($conn, $sql);
 
 ?>

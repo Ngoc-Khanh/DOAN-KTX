@@ -22,11 +22,12 @@ if (isset($_GET['requestId'])) {
         // 2. Cập nhật cột "số người hiện tại" trong bảng "phong"
         $updateSoNguoiQuery = "UPDATE phong SET SoNguoiHienTai = SoNguoiHienTai - 1 WHERE MaPhong = '$maPhong'";
         //3. xoá mã phòng của sinh viên đó trong bảng sinhvien
-        $updateSinhVienQuery= " UPDATE sinhvien SET MaPhong = NULL WHERE MaPhong = '$maPhong'";
+        $updateSinhVienQuery= " UPDATE sinhvien SET MaPhong = NULL, TenKhu = NULL WHERE MaPhong = '$maPhong'";
         
         if (mysqli_query($conn, $updateSoNguoiQuery)) {
             // 4. Cập nhật trạng thái và ngày trả phòng trong bảng "dangkyphong"
             $updateQuery = "UPDATE dangkyphong SET TinhTrang = 'đã duyệt', NgayTraPhong = '$ngayTraPhong' WHERE MaDK = '$requestId'";
+            $resultUpdateSinhVienQuery = mysqli_query($conn, $updateSinhVienQuery);
             
             if (mysqli_query($conn, $updateQuery)) {
                 ?>
